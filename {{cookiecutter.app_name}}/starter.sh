@@ -11,10 +11,8 @@ mkdir -p "/var/html/www/{{cookiecutter.app_name}}/template/"
 echo "template directory created"
 
 # create database
-sudo -u postgres psql -c "CREATE DATABASE {{cookiecutter.DB_NAME}};"
-sudo -u postgres psql -c "CREATE USER {{cookiecutter.DB_USER}} WITH PASSWORD '{{cookiecutter.DB_PASSWORD}}';"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE {{cookiecutter.DB_NAME}} TO {{cookiecutter.DB_USER}};"
-echo "Database created"
+sudo chmod +X create_db.sh
+./create_db.sh
 
 # deploy database
 sudo  cp ./{{cookiecutter.app_name}}.config  /etc/nginx/sites-available/{{cookiecutter.app_name}}
