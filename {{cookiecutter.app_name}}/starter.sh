@@ -28,6 +28,10 @@ source ./venv/bin/activate
 
 pip install -r req.txt
 
+sudo nginx -t
+
+sudo systemctl restart nginx
+
 sudo systemctl restart {{cookiecutter.app_name}}.socket
 sudo systemctl restart {{cookiecutter.app_name}}.server
 echo "sudo systemctl restart"
