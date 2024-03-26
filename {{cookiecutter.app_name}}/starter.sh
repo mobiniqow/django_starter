@@ -1,5 +1,6 @@
 #!/bin/bash
 
+deactivate
 # make directory 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/static/" 
 sudo chmod -R 755 "/var/html/www/{{cookiecutter.app_name}}/static/"
