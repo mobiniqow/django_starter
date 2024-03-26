@@ -2,6 +2,8 @@
 # make directory 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/static/" 
 sudo chmod -R 777 "/var/html/www/{{cookiecutter.app_name}}/static/"
+sudo mkdir -p "/var/log/{{cookiecutter.app_name}}" 
+sudo touch -p "/var/log/{{cookiecutter.app_name}}/access.log"  
 echo "static directory created"
 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/media/"
