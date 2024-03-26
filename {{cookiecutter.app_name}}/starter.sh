@@ -27,7 +27,13 @@ sudo  cp ./{{cookiecutter.app_name}}.socket  /etc/systemd/system/{{cookiecutter.
 echo "template directory created"
 sudo systemctl daemon-reload
 
-source ../venv/bin/activate
+python -m pip install virtualenv
+
+python -m virtualenv venv
+
+source ./venv/bin/activation
+
+python -m pip install 
 
 pip install -q -r req.txt
 
