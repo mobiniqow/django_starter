@@ -1,10 +1,10 @@
 {
-    "app_name":"mobiniqow",
-    "domain":"example.com",
+    "APP_NAME":"mobiniqow",
+    "DOMAIN":"example.com",
     "DB_USER":"DB_USER",
     "DB_PASSWORD":"DB_PASSWORD",
     "DB_NAME":"DB_NAME",
     "DB_HOST":"DB_HOST",
     "DB_PORT":"DB_PORT",
-    "APP_URL":"APP_URL"
+    "APP_URL":"/home/ubuntu/"
 }

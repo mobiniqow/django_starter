@@ -7,7 +7,7 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory={{cookiecutter.APP_URL}}
+WorkingDirectory={{cookiecutter.APP_URL}}/{{cookiecutter.APP_NAME}}
 ExecStart={{cookiecutter.app_name}}/venv/bin/gunicorn \
     --access-logfile - \
     --workers 3 \
