@@ -33,10 +33,15 @@ sudo systemctl restart nginx
 
 echo "sudo systemctl restart"
 sudo systemctl restart {{cookiecutter.app_name}}.socket
-sudo systemctl restart {{cookiecutter.app_name}}.server
+sudo systemctl restart {{cookiecutter.app_name}}.service
 
-sudo systemctl enable {{cookiecutter.app_name}}.socket
+sudo systemctl enable {{cookiecutter.app_name}}.socket 
+sudo systemctl restart {{cookiecutter.app_name}}.service
 
 black .
+
+python manage.py makemigrations --settings core.settings.prod
+python manage.py migrate --settings core.settings.prod
+python manage.py collectstatic --settings core.settings.prod
 
 echo "done"
