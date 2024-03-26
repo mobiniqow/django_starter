@@ -1,7 +1,29 @@
 #!/bin/bash
 
-sudo  cp ./{{app_nginx_copnfig_name}}.config  /etc/nginx/sites-available/{{app_nginx_copnfig_name}}
-sudo ln -sf /etc/nginx/sites-available/{{app_nginx_copnfig_name}}  /etc/nginx/sites-enabled/{{app_nginx_copnfig_name}}
-sudo  cp ./{{app_service_name}}.service  /etc/systemd/system/{{app_service_name}}.service
-sudo  cp ./{{app_socket_name}}.socket  /etc/systemd/system/{{app_socket_name}}.socket
+mkdir -p "/var/html/www/{{cookiecutter.app_name}}/static/"
+echo "static directory created"
+
+mkdir -p "/var/html/www/{{cookiecutter.app_name}}/media/"
+echo "media directory created"
+
+mkdir -p "/var/html/www/{{cookiecutter.app_name}}/template/"
+echo "template directory created"
+
+sudo  cp ./{{cookiecutter.app_name}}.config  /etc/nginx/sites-available/{{cookiecutter.app_name}}
+sudo ln -sf /etc/nginx/sites-available/{{cookiecutter.app_name}}  /etc/nginx/sites-enabled/{{cookiecutter.app_name}}
+sudo  cp ./{{cookiecutter.app_name}}.service  /etc/systemd/system/{{cookiecutter.app_name}}.service
+sudo  cp ./{{cookiecutter.app_name}}.socket  /etc/systemd/system/{{cookiecutter.app_name}}.socket
+
+python -m virtualenv venv
+
+source ./venv/bin/activate
+
+pip install -r req.txt
+
+sudo systemctl restart {{cookiecutter.app_name}}.socket
+sudo systemctl restart {{cookiecutter.app_name}}.server
+echo "sudo systemctl restart"
+
+sudo systemctl enable {{cookiecutter.app_name}}.socket
+
 echo "done"
