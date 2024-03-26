@@ -20,7 +20,7 @@ DATABASES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/var/html/www/{{cookiecutter.APP_NAME}}/template/'],
+        'DIRS': ['/var/html/www/{{cookiecutter.app_name}}/template/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -37,11 +37,11 @@ ALLOWED_HOSTS = ['*']
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = "/var/html/www/{{cookiecutter.APP_NAME}}/static/"
+STATIC_ROOT = "/var/html/www/{{cookiecutter.app_name}}/static/"
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = "/var/html/www/{{cookiecutter.APP_NAME}}/media/"
+MEDIA_ROOT = "/var/html/www/{{cookiecutter.app_name}}/media/"
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=4),

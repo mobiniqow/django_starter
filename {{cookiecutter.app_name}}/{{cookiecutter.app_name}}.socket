@@ -2,7 +2,7 @@
 Description=gunicorn socket
 
 [Socket]
-ListenStream=/run/{{cookiecutter.APP_NAME}}.sock
+ListenStream=/run/{{cookiecutter.app_name}}.sock
 
 [Install]
 WantedBy=sockets.target

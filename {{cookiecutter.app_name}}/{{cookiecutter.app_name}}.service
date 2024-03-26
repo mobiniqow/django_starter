@@ -1,18 +1,18 @@
 [Unit]
 Description=gunicorn daemon
-Requires={{cookiecutter.APP_NAME}}.socket
+Requires={{cookiecutter.app_name}}.socket
 After=network.target
 
 
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory={{cookiecutter.APP_URL}}/{{cookiecutter.APP_NAME}}
-ExecStart={{cookiecutter.APP_NAME}}/venv/bin/gunicorn \
+WorkingDirectory={{cookiecutter.APP_URL}}/{{cookiecutter.app_name}}
+ExecStart={{cookiecutter.app_name}}/venv/bin/gunicorn \
     --access-logfile - \
     --workers 3 \
-    --bind unix:/run/{{cookiecutter.APP_NAME}}.sock \
-    {{cookiecutter.APP_NAME}}.wsgi:application
+    --bind unix:/run/{{cookiecutter.app_name}}.sock \
+    {{cookiecutter.app_name}}.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
