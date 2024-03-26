@@ -1,13 +1,17 @@
 #!/bin/bash
 
 # make directory 
-sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/static/"
+sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/static/" 
+sudo chmod -R ug+rw "/var/html/www/{{cookiecutter.app_name}}/static/"
 echo "static directory created"
 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/media/"
+sudo chmod -R ug+rw "/var/html/www/{{cookiecutter.app_name}}/media/"
 echo "media directory created"
 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/template/"
+sudo chmod -R ug+rw "/var/html/www/{{cookiecutter.app_name}}/template/"
+
 echo "template directory created"
 
 # create database
