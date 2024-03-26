@@ -13,7 +13,7 @@ echo "template directory created"
 
 # create database
 sudo chmod +X create_db.sh
-./create_db.sh
+sh ./create_db.sh
 
 # deploy database
 sudo  cp ./{{cookiecutter.app_name}}.config  /etc/nginx/sites-available/{{cookiecutter.app_name}}
