@@ -36,4 +36,6 @@ echo "sudo systemctl restart"
 
 sudo systemctl enable {{cookiecutter.app_name}}.socket
 
+black .
+
 echo "done"

@@ -1,1 +1,1 @@
-from account.tests.url_tests import *
+from .url_tests import *
