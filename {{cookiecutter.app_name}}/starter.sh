@@ -19,10 +19,12 @@ sudo chmod +X create_db.sh
 sh ./create_db.sh
 
 # deploy database
-sudo  cp ./{{cookiecutter.app_name}}.config  /etc/nginx/sites-available/{{cookiecutter.app_name}}
-sudo ln -sf /etc/nginx/sites-available/{{cookiecutter.app_name}}  /etc/nginx/sites-enabled/{{cookiecutter.app_name}}
+sudo  cp ./{{cookiecutter.app_name}}.config  /etc/nginx/sites-available/{{cookiecutter.app_name}} 
+sudo ln -sf /etc/nginx/sites-available/{{cookiecutter.app_name}}  /etc/nginx/sites-enabled/{{cookiecutter.app_name}} 
 sudo  cp ./{{cookiecutter.app_name}}.service  /etc/systemd/system/{{cookiecutter.app_name}}.service
+echo "template directory created"
 sudo  cp ./{{cookiecutter.app_name}}.socket  /etc/systemd/system/{{cookiecutter.app_name}}.socket
+echo "template directory created"
 sudo systemctl daemon-reload
 python -m virtualenv venv
 
@@ -38,7 +40,7 @@ echo "sudo systemctl restart"
 sudo systemctl restart {{cookiecutter.app_name}}.socket
 sudo systemctl restart {{cookiecutter.app_name}}.service
 
-sudo systemctl enable {{cookiecutter.app_name}}.socket 
+sudo systemctl enable  {{cookiecutter.app_name}}.socket 
 sudo systemctl restart {{cookiecutter.app_name}}.service
 
 black .
