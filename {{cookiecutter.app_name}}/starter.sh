@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# make directory
-pip install -r req.txt
+# make directory 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/static/"
 echo "static directory created"
 
@@ -25,7 +24,7 @@ python -m virtualenv venv
 
 source ./venv/bin/activate
 
-pip install -r req.txt
+pip install -q -r req.txt
 
 sudo nginx -t
 
