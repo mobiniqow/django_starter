@@ -12,7 +12,8 @@ ExecStart={{cookiecutter.APP_URL}}/venv/bin/gunicorn \
     --access-logfile - \
     --workers 3 \
     --bind unix:/run/{{cookiecutter.app_name}}.sock \
-    {{cookiecutter.app_name}}.wsgi:application
+    core.wsgi:application \
+    --env DJANGO_SETTINGS_MODULE=core.settings.prod
 
 [Install]
 WantedBy=multi-user.target
