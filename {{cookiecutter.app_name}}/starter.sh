@@ -1,17 +1,15 @@
 #!/bin/bash
-
-deactivate
 # make directory 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/static/" 
-sudo chmod -R 755 "/var/html/www/{{cookiecutter.app_name}}/static/"
+sudo chmod -R 777 "/var/html/www/{{cookiecutter.app_name}}/static/"
 echo "static directory created"
 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/media/"
-sudo chmod -R 755 "/var/html/www/{{cookiecutter.app_name}}/media/"
+sudo chmod -R 777 "/var/html/www/{{cookiecutter.app_name}}/media/"
 echo "media directory created"
 
 sudo mkdir -p "/var/html/www/{{cookiecutter.app_name}}/template/"
-sudo chmod -R 755 "/var/html/www/{{cookiecutter.app_name}}/template/"
+sudo chmod -R 777 "/var/html/www/{{cookiecutter.app_name}}/template/"
 
 echo "template directory created"
 
@@ -28,13 +26,7 @@ sudo  cp ./{{cookiecutter.app_name}}.socket  /etc/systemd/system/{{cookiecutter.
 echo "template directory created"
 sudo systemctl daemon-reload
 
-python -m pip install virtualenv
-
-python -m virtualenv venv
-
-source ./venv/bin/activation
-
-python -m pip install 
+python -m pip install pip
 
 pip install -q -r req.txt
 
