@@ -72,23 +72,6 @@ class VerifyAPIView(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class RegisterAPIView(GenericAPIView):
-    serializer_class = UserRegisterSerializer
-    throttle_classes = [SevenPerMinuteThrottle, TwentyPerHourThrottle, FiftyPerDay]
-
-    @swagger_auto_schema(responses={200: GeneralSerializer()})
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = User(**serializer.data)
-        otp = User.objects.make_random_password(length=4, allowed_chars="123456789")
-        send_otp_message(user.phone, otp)
-        user.set_password(otp)
-        user.save()
-        serializer = GeneralSerializer({"message": "code sending to your phone"})
-        return Response(serializer.data)
-
-
 class LoginAPIView(GenericAPIView):
     serializer_class = LoginSerializer
     throttle_classes = [SevenPerMinuteThrottle, TwentyPerHourThrottle, FiftyPerDay]
@@ -101,10 +84,21 @@ class LoginAPIView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         phone = serializer.validated_data.get("phone")
-        user = get_object_or_404(User, phone=phone)
+        user = User.objects.filter(phone=phone)
         otp = User.objects.make_random_password(length=4, allowed_chars="123456789")
-        user.set_password(otp)
-        send_otp_message(phone, otp)
-        user.save()
-        serializer = GeneralSerializer({"message": "code sending to your phone"})
-        return Response(serializer.data)
+        if not user.exists():
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = User(**serializer.data)
+            send_otp_message(user.phone, otp)
+            user.set_password(otp)
+            user.save()
+            serializer = GeneralSerializer({"message": "code sending to your phone"})
+            return Response(serializer.data)
+        else:
+            user = user.first()
+            user.set_password(otp)
+            send_otp_message(phone, otp)
+            user.save()
+            serializer = GeneralSerializer({"message": "code sending to your phone"})
+            return Response(serializer.data)
