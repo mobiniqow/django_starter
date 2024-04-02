@@ -15,7 +15,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "user_name",
             "avatar",
         )
-        read_only_fields = ("phone")
+        read_only_fields = ("phone",)
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
