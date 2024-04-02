@@ -51,4 +51,5 @@ python manage.py migrate --settings core.settings.prod
 python manage.py collectstatic --settings core.settings.prod
 
 sudo certbot --nginx -d {{cookiecutter.DOMAIN}} -d www.{{cookiecutter.DOMAIN}}
+sudo systemctl restart nginx
 echo "done"
