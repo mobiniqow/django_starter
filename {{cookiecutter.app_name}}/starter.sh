@@ -48,7 +48,7 @@ black .
 
 python manage.py makemigrations --settings core.settings.prod
 python manage.py migrate --settings core.settings.prod
-python manage.py collectstatic --settings core.settings.prod
+python manage.py collectstatic --no-input --settings core.settings.prod
 
 sudo certbot --nginx -d {{cookiecutter.DOMAIN}} -d www.{{cookiecutter.DOMAIN}}
 sudo systemctl restart nginx
