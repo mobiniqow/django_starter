@@ -9,7 +9,7 @@ User=ubuntu
 Group=www-data
 WorkingDirectory={{cookiecutter.APP_URL}}/{{cookiecutter.app_name}}
 ExecStart={{cookiecutter.APP_URL}}/venv/bin/gunicorn \
-    --access-logfile - \
+    --access-logfile /var/log/{{cookiecutter.app_name}}/access.log \
     --workers 3 \
     --bind unix:/run/{{cookiecutter.app_name}}.sock \
     core.wsgi:application \
