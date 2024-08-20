@@ -81,3 +81,9 @@ REST_FRAMEWORK = {
         # 'uploads': '20/day'
     },
 }
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
