@@ -48,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     created_at = jmodels.jDateField(auto_now_add=True)
     updated_at = jmodels.jDateField(auto_now=True)
-    avatar = models.FileField(upload_to='account/user/avatar',
+    avatar = models.FileField(upload_to='auth/user/avatar',
                               validators=[FileExtensionValidator(['jpg', 'png', 'jpeg']), ], blank=True)
     state = models.IntegerField(choices=State.choices, default=State.SUSPEND)
     user_name = models.CharField(max_length=33)

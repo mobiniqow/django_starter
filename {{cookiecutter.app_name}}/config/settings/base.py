@@ -12,7 +12,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "rest_framework",
-    "account",
+    "auth",
     "drf_yasg",
 ]
 # DATA_UPLOAD_MAX_MEMORY_SIZE = 524288022
@@ -28,8 +28,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "core.urls"
-WSGI_APPLICATION = "core.wsgi.application"
+ROOT_URLCONF = "config.urls"
+WSGI_APPLICATION = "config.wsgi.application"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -45,7 +45,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "account.User"
+AUTH_USER_MODEL = "auth.User"
 
 LANGUAGE_CODE = "en-us"
 

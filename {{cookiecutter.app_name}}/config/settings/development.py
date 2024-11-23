@@ -8,7 +8,7 @@ import os
 DEBUG = True
 INSTALLED_APPS.append("debug_toolbar")
 INSTALLED_APPS.append("django_extensions")
-os.environ["DJANGO_SETTINGS_MODULE"] = "core.settings.dev"
+os.environ["DJANGO_SETTINGS_MODULE"] = "config.settings.dev"
 ALLOWED_HOSTS = ["*"]
 #
 # DATABASES = {
