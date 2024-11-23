@@ -1,9 +1,8 @@
 import os
-import sys
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
-    help = 'Creates a new app with custom folder structure including service layer'
+    help = 'Creates a new app with custom folder structure including service layer, versioning, and more'
 
     def add_arguments(self, parser):
         # دریافت نام اپ از ورودی
@@ -36,12 +35,15 @@ class Command(BaseCommand):
         self.create_file(os.path.join(app_path, 'urls.py'), self.get_app_urls())
 
         # ایجاد فایل‌های urls و views برای هر بخش (public, admin, user)
-        self.create_section_files(app_name, 'public')
-        self.create_section_files(app_name, 'admin')
-        self.create_section_files(app_name, 'user')
+        self.create_section_files(app_name, 'public', version='v1')
+        self.create_section_files(app_name, 'admin', version='v1')
+        self.create_section_files(app_name, 'user', version='v1')
 
         # ایجاد سرویس‌ها برای اپ
         self.create_service_files(app_name)
+
+        # ایجاد تست‌ها
+        self.create_test_files(app_name)
 
         self.stdout.write(self.style.SUCCESS(f"App '{app_name}' created successfully!"))
 
@@ -61,28 +63,28 @@ urlpatterns = [
     path('user/', include(user_urls)),
 ]"""
 
-    def create_section_files(self, app_name, section):
+    def create_section_files(self, app_name, section, version='v1'):
         # مسیر پوشه هر بخش (public, admin, user)
         section_path = os.path.join('apps', app_name, section)
 
-        # ایجاد فایل urls برای هر بخش
-        self.create_file(os.path.join(section_path, 'urls.py'), self.get_section_urls(section))
+        # ایجاد پوشه برای نسخه
+        versioned_path = os.path.join(section_path, version)
+        os.makedirs(versioned_path, exist_ok=True)
 
-        # ایجاد فایل views برای هر بخش
-        self.create_file(os.path.join(section_path, 'views.py'), self.get_section_views(section))
+        # ایجاد فایل‌های urls، views و tests برای هر بخش با ورژن
+        self.create_file(os.path.join(versioned_path, 'urls.py'), self.get_section_urls(section, version))
+        self.create_file(os.path.join(versioned_path, 'views.py'), self.get_section_views(section, version))
+        self.create_file(os.path.join(versioned_path, 'tests.py'), self.get_section_tests(section, version))
 
-        # ایجاد فایل tests برای هر بخش
-        self.create_file(os.path.join(section_path, 'tests.py'), self.get_section_tests(section))
-
-    def get_section_urls(self, section):
+    def get_section_urls(self, section, version):
         return f"""from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('list/', views.list_view, name='{section}_list'),
+    path('list/', views.list_view, name='{section}_{version}_list'),
 ]"""
 
-    def get_section_views(self, section):
+    def get_section_views(self, section, version):
         return f"""from django.shortcuts import render
 from django.http import JsonResponse
 from apps.{section}.services import {section.capitalize()}Service
@@ -92,12 +94,12 @@ def list_view(request):
     data = service.get_list()
     return JsonResponse(data)"""
 
-    def get_section_tests(self, section):
+    def get_section_tests(self, section, version):
         return f"""from django.test import TestCase
 
 class {section.capitalize()}TestCase(TestCase):
     def test_example(self):
-        response = self.client.get('/{section}/list/')
+        response = self.client.get('/{section}/{version}/list/')
         self.assertEqual(response.status_code, 200)
         self.assertIn('message', response.json())"""
 
@@ -111,4 +113,19 @@ class {section.capitalize()}TestCase(TestCase):
         return {'message': 'List from {service_name} service'}
 """
         self.create_file(os.path.join(service_path, f'{app_name.lower()}_service.py'), service_content.format(service_name=app_name))
+
+    def create_test_files(self, app_name):
+        # مسیر پوشه تست‌ها
+        test_path = os.path.join('apps', app_name, 'tests')
+
+        # ایجاد فایل تست‌ها
+        test_content = """from django.test import TestCase
+
+class BasicTestCase(TestCase):
+    def test_example(self):
+        response = self.client.get('/public/v1/list/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('message', response.json())
+"""
+        self.create_file(os.path.join(test_path, 'test_basic.py'), test_content)
 
