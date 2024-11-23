@@ -2,7 +2,7 @@ import os
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
-    help = 'Creates a new app with custom folder structure including service layer, versioning, and more'
+    help = 'Creates a new app with custom folder structure including service layer, versioning, CQRS (Command Query Responsibility Segregation), and more'
 
     def add_arguments(self, parser):
         # دریافت نام اپ از ورودی
@@ -27,7 +27,8 @@ class Command(BaseCommand):
         os.makedirs(os.path.join(app_path, 'public'), exist_ok=True)
         os.makedirs(os.path.join(app_path, 'admin'), exist_ok=True)
         os.makedirs(os.path.join(app_path, 'user'), exist_ok=True)
-        os.makedirs(os.path.join(app_path, 'services'), exist_ok=True)
+        os.makedirs(os.path.join(app_path, 'services', 'command'), exist_ok=True)
+        os.makedirs(os.path.join(app_path, 'services', 'query'), exist_ok=True)
 
         # ایجاد فایل‌های اصلی
         self.create_file(os.path.join(app_path, '__init__.py'), f'# {app_name} app')
@@ -87,11 +88,12 @@ urlpatterns = [
     def get_section_views(self, section, version):
         return f"""from django.shortcuts import render
 from django.http import JsonResponse
-from apps.{section}.services import {section.capitalize()}Service
+from apps.{section}.services.query import {section.capitalize()}QueryService
+from apps.{section}.services.command import {section.capitalize()}CommandService
 
 def list_view(request):
-    service = {section.capitalize()}Service()
-    data = service.get_list()
+    query_service = {section.capitalize()}QueryService()
+    data = query_service.get_list()
     return JsonResponse(data)"""
 
     def get_section_tests(self, section, version):
@@ -107,12 +109,25 @@ class {section.capitalize()}TestCase(TestCase):
         # مسیر پوشه سرویس
         service_path = os.path.join('apps', app_name, 'services')
 
-        # ایجاد فایل سرویس
-        service_content = """class {service_name}Service:
-    def get_list(self):
-        return {'message': 'List from {service_name} service'}
+        # ایجاد سرویس‌های Command و Query برای هر بخش
+        for section in ['public', 'admin', 'user']:
+            # Command Service
+            command_service_content = """class {service_name}CommandService:
+    def create(self, data):
+        # عملیات ایجاد
+        return {'message': 'Created successfully'}
 """
-        self.create_file(os.path.join(service_path, f'{app_name.lower()}_service.py'), service_content.format(service_name=app_name))
+            self.create_file(os.path.join(service_path, 'command', f'{section.capitalize()}CommandService.py'),
+                             command_service_content.format(service_name=section.capitalize()))
+
+            # Query Service
+            query_service_content = """class {service_name}QueryService:
+    def get_list(self):
+        # عملیات خواندن لیست
+        return {'message': 'List from {service_name} query service'}
+"""
+            self.create_file(os.path.join(service_path, 'query', f'{section.capitalize()}QueryService.py'),
+                             query_service_content.format(service_name=section.capitalize()))
 
     def create_test_files(self, app_name):
         # مسیر پوشه تست‌ها
@@ -128,4 +143,3 @@ class BasicTestCase(TestCase):
         self.assertIn('message', response.json())
 """
         self.create_file(os.path.join(test_path, 'test_basic.py'), test_content)
-

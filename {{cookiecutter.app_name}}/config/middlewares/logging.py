@@ -1,22 +1,55 @@
-import logging
 
+from django.utils.deprecation import MiddlewareMixin
 
-class LoggingMiddleware:
-    """
-    Middleware برای ثبت لاگ‌ها در هر درخواست.
-    """
+# ANSI codes for colors and styles
+class LogColorMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
+        # تنظیمات لاگ به صورت رنگی
+        if response.status_code >= 400:
+            log_color = '\033[91m'  # Red for errors (4xx, 5xx)
+        elif response.status_code >= 300:
+            log_color = '\033[93m'  # Yellow for redirects (3xx)
+        else:
+            log_color = '\033[92m'  # Green for successful responses (2xx)
 
-    def __init__(self, get_response):
-        self.get_response = get_response
-        self.logger = logging.getLogger(__name__)
+        log_reset = '\033[0m'  # Reset color
 
-    def __call__(self, request):
-        # ثبت لاگ درخواست‌ها
-        self.logger.info(f"Request received: {request.method} {request.path}")
-
-        response = self.get_response(request)
-
-        # ثبت لاگ پاسخ‌ها
-        self.logger.info(f"Response status: {response.status_code}")
-
+        # ایجاد پیام لاگ برای ترمینال
+        log_message = f"{log_color}Response: {response.status_code} {response.reason_phrase}{log_reset}"
+        self.log_to_console(log_message)
         return response
+
+    def log_to_console(self, message):
+        # پرینت لاگ به همراه رنگ
+        print(message)
+
+# تنظیمات لاگ در settings.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+        'colored': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'colored',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
