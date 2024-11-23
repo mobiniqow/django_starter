@@ -1,0 +1,8 @@
+msgid "Hello, world!"
+msgstr "سلام، دنیا!"
+
+msgid "Welcome to our website"
+msgstr "به وب‌سایت ما خوش آمدید"
+
+msgid "This is a custom message"
+msgstr "این یک پیام سفارشی است"

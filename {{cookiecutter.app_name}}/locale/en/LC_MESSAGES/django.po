@@ -1,0 +1,8 @@
+msgid "Hello, world!"
+msgstr "Hello, world!"
+
+msgid "Welcome to our website"
+msgstr "Welcome to our website"
+
+msgid "This is a custom message"
+msgstr "This is a custom message"
